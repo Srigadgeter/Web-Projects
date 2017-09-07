@@ -1,2 +1,2 @@
 # Web-Projects
-The web projects created by me
+Web Projecsts of Codingmart puzzles and Own ideas
