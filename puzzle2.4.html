@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PUZZLE 2.4</title>
+    <style>
+    
+        #container2{
+            height: 300px;
+            width: 200px;
+            display: none;
+            background: white;
+            border-radius: 10px 10px 0px 0px;
+        }
+        
+        #container{
+            height: 300px;
+            width: 200px;
+            background: deepskyblue;
+            border: 1px solid black;
+            border-radius: 10px 10px 0px 0px;
+        }
+        
+        #pipe1{
+            height: 11px;
+            width: 50px;
+            background: coral;
+            margin-top: 291px;
+        }
+        
+        #pipe2{
+            height: 40px;
+            width: 11px;
+            background: coral;
+            margin-top: 289px;
+        }
+        
+        #tap{
+            height: 8px;
+            width: 25px;
+            background: orange;
+            position: absolute;
+            margin: 281px 0px 0px 245px;
+        }
+        
+        #water{
+            height: 120px;
+            width: 8px;
+            background: deepskyblue;
+            position: absolute;
+            margin: 329px 0px 0px 254px;
+        }
+        
+        .tank{
+            float: left;
+        }
+        
+        h1{
+            color: skyblue;
+            text-align: center;
+            font-family: monospace;
+        }
+        
+        h3{
+            color: black;
+            margin-top: 350px;
+            margin-right: 400px;
+        }
+        
+        h2{
+            color: limegreen;
+            margin-right: 220px;
+        }        
+        
+        h2,h3{
+            text-align: right;
+            font-family: monospace;
+        }
+        
+        #waste{
+            height: 30px;
+            width: 150px;
+            color: red;
+            text-align: center;
+            padding-top: 10px;
+            border-radius: 8px;
+            position: absolute;
+            background: moccasin;
+            font-family: monospace;
+            margin: 100px 0px 0px 300px;
+        }
+        
+    </style>
+</head>
+<body>
+    
+    <h1>PUZZLE 2.4</h1>
+    <h1>Water Decreases By Clicking Tap of a Tank</h1>
+    <div id="container" class="tank">
+        <div id="container2"></div>
+    </div>
+    <div id="pipe1" class="tank"></div>
+    <div id="pipe2" class="tank"></div>
+    <div id="tap"></div>
+    <div id="water"></div>
+    <div id="waste">Don't Waste Water</div>
+    <h3>BY</h3>
+    <h2>Sridhar T [BE - ECE]</h2>
+   
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script>
+    
+        $(function(){
+            count = 0
+            flag = true
+            
+            $("#water,#waste").hide()
+            
+            $("#tap").on("click",function(){
+                count++
+                if(count % 2 == 0){
+                    $("#container2").stop();
+                    $("#tap").css("background","orange")
+                }else{
+                    $("#container2").slideDown(3000,function(){
+                        $("#water,#waste").hide()
+                        $("#tap").off()
+                        $("#tap").click(function(){
+                            $("#tap").css("background","orange")
+                            $("#waste").css("height","50px")
+                            $("#waste").text("What a sense closing the tap after water flowed off ?").show()
+                            setTimeout(function(){
+                               $("#waste").hide()
+                            },3000)
+                        })                        
+                    })
+                    $("#tap").css("background","green")
+                }
+                
+                if(flag == true){
+                    $("#water,#waste").toggle()
+                }
+            })
+        })
+        
+    </script>
+
+</body>
+</html>
