@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>HOTEL MANAGEMENT</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+	<style>
+		body{
+			font-family: 'Montserrat', sans-serif;
+		}
+		li{
+			list-style: none;
+			display: inline-block;
+		}
+		a{
+			text-decoration: none;
+			color: black;
+		}
+		#tab-content{
+			padding: 10px;
+		}
+		p.alert-danger{
+			color: crimson;
+			display : none;
+		}
+		p.alert-success{
+			color: #5cb85c;
+			display : none;
+		}
+		p.alert-info{
+			color: #5bc0de;
+			display : none;
+		}
+		#hotelDetails, #bookingForm, #bookingDetails, #logoutBtn, #onlineBookingForm{
+			display: none;
+		}
+		.onlineHotelListItems{
+			list-style: none;
+			display: inline-block;
+			margin: 5px;
+		}
+	</style>
+</head>
+<body>
+
+	<div id="app">
+		
+		<div class="jumbotron text-center">
+			<h1>HOTEL MANAGEMENT</h1>
+		</div>
+
+		<div class="container">
+	        <tabs>
+	            <tab name="OYO's Tab" :selected="true">
+	            	<div id="Add Hotel">
+            			<h3 class="text-primary">Add Hotel</h3>
+			            <form>
+							Name : <input type="text" class="form-control" placeholder="Enter the Hotel Name" v-model="newHotel.name"><br>
+							<p id="nameField" class="small alert alert-danger"></p><br>
+							Location : <input type="text" class="form-control" placeholder="Enter Location of the Hotel" v-model="newHotel.location"><br>
+							<p id="locationField" class="small alert alert-danger"></p><br>
+							Contact : <input class="form-control" placeholder="Enter the Contact Number" v-model="newHotel.contact"><br>
+							<p id="contactField" class="small alert alert-danger"></p><br>
+							Total Rooms : <input class="form-control" placeholder="Enter the Total Rooms Available" v-model="newHotel.totalRooms"><br>
+							<p id="totalRoomsField" class="small alert alert-danger"></p><br>
+							<button class="btn btn-success" @click.prevent="addHotel"><span class="glyphicon glyphicon-plus"></span> Add hotel</button><br><br>
+							<p id="finalField" class="small alert alert-danger"></p><br>
+							<p id="finalFieldSuccess" class="small alert alert-success"></p><br>
+							<p id="finalFieldInfo" class="alert alert-info"></p>
+						</form>
+			        </div>
+	            	<br>
+	            	<div id="hotelDetails">
+		            	<h3 class="text-primary">List Of Hotels</h3>
+		            	<table class="table">
+							<tr>
+								<th>S. No</th>
+								<th>Name</th>
+								<th>Location</th>
+								<th>Contact</th>
+								<th>Total Rooms</th>
+								<th>Available Rooms</th>
+								<th>Availability</th>
+								<th>Option</th>
+							</tr>
+							<tr v-for="(hotel,index) in hotels">
+								<td>{{ index+1 }}</td>
+								<td>{{ hotel.name }}</td>
+								<td>{{ hotel.location }}</td>
+								<td>{{ hotel.contact }}</td>
+								<td>{{ hotel.totalRooms }}</td>
+								<td>{{ hotel.availableRooms }}</td>
+								<td>
+									<span v-if="hotel.availableRooms == 0" style="color: crimson">No Rooms</span>
+									<span v-if="hotel.availableRooms != 0" style="color: #5cb85c">Available</span>
+								</td>
+								<td>
+									<button class="btn btn-danger" @click="deleteHotel(index)"><span class="glyphicon glyphicon-remove"></span> Delete</button>
+								</td>
+							</tr>
+						</table>
+					</div>
+	            </tab>
+
+	            <tab name="Hotel's Tab">
+	            	<div id="loginByHotels">
+	            		<h3 class="text-primary">Login Panel</h3>
+						<form id="loginForm">
+							Hotel Reference Id : <input type="text" placeholder="Enter the Hotel Reference Id" class="form-control" v-model='refId'><br>
+							<p id="refIdField" class="small alert alert-danger"></p><br>
+							Password : <input type="password"  placeholder="Enter the Password" class="form-control" v-model='pass'><br>
+							<p id="passwordField" class="small alert alert-danger"></p><br>
+							<button class="btn btn-success" @click.prevent="loginAccount">Go &nbsp;<span class="glyphicon glyphicon-hand-right"></span></button><br><br>
+							<p id="finalAlert" class="small alert alert-danger"></p>
+							<p id="finalAlertSuccess" class="small alert alert-success"></p>
+						</form>
+					</div>
+					<button id="logoutBtn" class="btn btn-logout" @click.prevent="logoutAccount"><span class="glyphicon glyphicon-hand-left"> Logout</span></button><br><br>
+					
+					<br>
+					<div id="bookingForm">
+	            		<h3 class="text-primary">Booking Panel</h3>
+						<form>
+							Booking Name : <input type="text" class="form-control" placeholder="Enter the Booking Name" v-model="newBooking.bookedName"><br>
+							<p id="bookedNameField" class="small alert alert-danger"></p><br>
+							Booking Date : <input type="date" class="form-control" placeholder="Enter the Booking Date" v-model="newBooking.bookedDate"><br>
+							<p id="bookedDateField" class="small alert alert-danger"></p><br>
+							Phone Number : <input class="form-control" placeholder="Enter the Contact Number" v-model="newBooking.phoneNumber"><br>
+							<p id="phoneNumberField" class="small alert alert-danger"></p><br>
+							Room Count : <input class="form-control" placeholder="Enter the Number of Rooms Booking" v-model="newBooking.roomCount"><br>
+							<p id="roomCountField" class="small alert alert-danger"></p><br>
+							<button class="btn btn-success" @click.prevent="addBooking"><span class="glyphicon glyphicon-plus"></span> Add hotel</button><br>
+							<p id="finalbookedAlert" class="small alert alert-danger"></p><br>
+							<p id="finalbookedSuccessAlert" class="small alert alert-success"></p><br>
+						</form>
+					</div>
+					<br>
+					<div id="bookingDetails">
+	            		<h3 class="text-primary">Booked Details</h3>
+						<table class="table">
+							<tr>
+								<th>S.No.</th>
+								<th>Booked Name</th>
+								<th>Booked Date</th>
+								<th>Phone Number</th>
+								<th>Room Count</th>
+								<th>Booked Mode</th>
+								<th>Option</th>
+							</tr>
+							<tr v-for="(booking,index) in bookings">
+								<td>{{ index+1 }}</td>
+								<td>{{ booking.bookedName }}</td>
+								<td>{{ booking.bookedDate }}</td>
+								<td>{{ booking.phoneNumber }}</td>
+								<td>{{ booking.roomCount }}</td>
+								<td>
+									<span v-if="booking.bookedMode == 'Offline'" style="color: crimson">{{ booking.bookedMode }}</span>
+									<span v-if="booking.bookedMode == 'Online'" style="color: #5cb85c">{{ booking.bookedMode }}</span>
+								</td>
+								<td>
+									<button class="btn btn-danger" @click="deleteBooking(index)"><span class="glyphicon glyphicon-remove"></span> Delete</button>
+								</td>
+							</tr>
+						</table>
+					</div>
+	            </tab>
+
+	            <tab name="Customer's Tab">
+	                <div id="onlineBookingHotelsList">
+	                	<h3 class="text-primary">Hotel List</h3>
+	                	<ul>
+	                		<li class="onlineHotelListItems" v-for="(hotel,index) in hotels">
+	                			<button class="btn btn-primary" :disabled="hotel.availableRooms == 0" @click.prevent="showForm(index)">{{ hotel.name }} <span class="badge">{{ hotel.availableRooms }}</span></button>
+	                		</li>
+	                	</ul>
+	                </div>
+	                <div id="onlineBookingForm">
+	            		<h3 class="text-primary">Online Booking Panel</h3>
+						<form>
+							Booking Name : <input type="text" class="form-control" placeholder="Enter the Booking Name" v-model="newBooking.bookedName"><br>
+							<p id="bookedNameField" class="small alert alert-danger"></p><br>
+							Booking Date : <input type="date" class="form-control" placeholder="Enter the Booking Date" v-model="newBooking.bookedDate"><br>
+							<p id="bookedDateField" class="small alert alert-danger"></p><br>
+							Phone Number : <input class="form-control" placeholder="Enter the Contact Number" v-model="newBooking.phoneNumber"><br>
+							<p id="phoneNumberField" class="small alert alert-danger"></p><br>
+							Room Count : <input class="form-control" placeholder="Enter the Number of Rooms Booking" v-model="newBooking.roomCount"><br>
+							<p id="roomCountField" class="small alert alert-danger"></p><br>
+							<button class="btn btn-success" @click.prevent="addOnlineBooking"><span class="glyphicon glyphicon-plus"></span> Add hotel</button><br>
+							<p id="finalbookedAlert" class="small alert alert-danger"></p><br>
+							<p id="finalbookedSuccessAlert" class="small alert alert-success"></p><br>
+						</form>
+					</div>
+					<br>
+	            </tab>
+	        </tabs>
+		</div>
+
+	</div>
+
+	<script src="vue.js"></script>
+	<script src="hotel_mngt.js"></script>
+	
+</body>
+</html>
+
+
+
