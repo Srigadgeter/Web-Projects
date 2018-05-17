@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Keycode</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+	<style>
+		body{
+			font-family: 'Montserrat', sans-serif;
+		}
+		.comment{
+			color : #3c3c3c;
+			font-size: 14px;
+			-webkit-box-shadow: -1px 4px 6px -1px rgba(74,71,74,0.8);
+			-moz-box-shadow: -1px 4px 6px -1px rgba(74,71,74,0.8);
+			box-shadow: -1px 4px 6px -1px rgba(74,71,74,0.8);
+		}
+		#keyId{
+			font-size: 245px;
+			margin: 90px 0px 15px 0px;
+			text-shadow: 3px 3px 2px gray;
+		}
+		#initialStatement{
+			position: absolute;
+			top: 300px;
+			left: 470px;
+		}
+		#footerLine{
+			display: inline;
+			position: absolute;
+			left: 500px;
+			bottom: 5px;
+		}
+		#developer{
+			color: red;
+		}
+		img{
+			width: 30px;
+			height: 30px;
+		}
+	</style>
+</head>
+<body>
+
+	<div id="vueApp" class="container text-center">
+		<div class="jumbotron text-primary" id="heading">
+			<h3>KEYCODES</h3>
+		</div>
+
+		<div class="label well comment" id="initialStatement">
+			press any key to get the javascript event keycode
+		</div>
+
+		<div v-for="(value, key) in keyCodes" >
+			<div v-if="key == pressedKey">
+				<div id="keyId">
+					{{ key }}
+				</div>
+				<div class="label well comment">
+					{{ value }}
+				</div>
+			</div>
+		</div>
+		
+		<div id="footerLine">
+			Developed By <span id="developer">Sridhar T</span> --- follow me on 
+			<a href="https://www.youtube.com/channel/UCfdnmMzcHCPi_TmqMEp7OiA"><img src="https://static1.squarespace.com/static/57be2c58725e25c27e170eba/t/586f4003be6594f5ce4b8ead/1483685891644/Youtube-icon.png" alt="Youtube Logo" title="Srigadgeter Code Elixir"></a>
+			<img src="https://cdn.iconscout.com/public/images/icon/free/png-256/gmail-logo-329e3553e65b1f82-256x256.png" alt="Gmail Logo" title="srigadgets@gmail.com">
+		</div>
+	</div>
+	
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
+	<script src="keycode.js"></script>
+
+</body>
+</html>
